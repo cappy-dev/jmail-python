@@ -433,7 +433,7 @@ class JmailClient:
             df = client.search_by_sender("ghislaine")
         """
         df = self.emails(slim=slim)
-        mask = df["sender"].str.contains(sender, case=False, na=False)
+        mask = df["sender"].str.contains(sender, case=False, na=False, regex=False)
         return df[mask]
 
     def search_by_subject(self, subject: str, slim: bool = True) -> pd.DataFrame:
@@ -450,7 +450,7 @@ class JmailClient:
             df = client.search_by_subject("flight logs")
         """
         df = self.emails(slim=slim)
-        mask = df["subject"].str.contains(subject, case=False, na=False)
+        mask = df["subject"].str.contains(subject, case=False, na=False, regex=False)
         return df[mask]
 
     def top_senders(self, n: int = 20, slim: bool = True) -> pd.DataFrame:
