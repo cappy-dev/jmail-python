@@ -178,6 +178,19 @@ class TestDocuments:
 
 
 class TestSearch:
+    def test_search_uses_literal_patterns(self, monkeypatch):
+        client = JmailClient()
+        source = pd.DataFrame(
+            {
+                "sender": ["alerts[prod]", "alerts-prod"],
+                "subject": ["build [failed]", "build failed"],
+            }
+        )
+        monkeypatch.setattr(client, "emails", lambda slim: source)
+
+        assert len(client.search_by_sender("[prod]")) == 1
+        assert len(client.search_by_subject("[failed]")) == 1
+
     def test_search_by_sender(self):
         client = JmailClient()
         df = client.search_by_sender("epstein", slim=True)
